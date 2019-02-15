@@ -1,4 +1,7 @@
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace kompozytor_menu.Models
 {
