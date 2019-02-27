@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace kompozytor_menu.Controllers
 {
-    public class MealTypeController : Controller
+    public class MyMenuController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MealTypeController(ApplicationDbContext context)
+        public MyMenuController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,8 @@ namespace kompozytor_menu.Controllers
         // GET: UnitOfMeasures
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MealType.ToListAsync());            
+            //var MyMenus = _context.MyMenu.Include(i=>i.Package).Include(i=>i.MealType);
+            return View(await _context.MyMenu.ToListAsync());            
         }
 
         // GET: UnitOfMeasures/Details/5
@@ -34,19 +35,22 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType
+            var MyMenu = await _context.MyMenu
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            if (MyMenu == null)
             {
                 return NotFound();
             }
 
-            return View(mealType);
+            return View(MyMenu);
         }
 
         // GET: UnitOfMeasures/Create
         public IActionResult Create()
         {
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
             return View();
         }
 
@@ -55,15 +59,19 @@ namespace kompozytor_menu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] MealType mealType)
+        public async Task<IActionResult> Create([Bind("Id,Name,MealTypeId,PackageId")] MyMenu MyMenu)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mealType);
+                _context.Add(MyMenu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(mealType);
+
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
+            return View(MyMenu);
         }
 
         // GET: UnitOfMeasures/Edit/5
@@ -74,12 +82,16 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType.SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            var MyMenu = await _context.MyMenu.SingleOrDefaultAsync(m => m.Id == id);
+            if (MyMenu == null)
             {
                 return NotFound();
             }
-            return View(mealType);
+
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
+            return View(MyMenu);
         }
 
         // POST: UnitOfMeasures/Edit/5
@@ -87,9 +99,9 @@ namespace kompozytor_menu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] MealType mealType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,MealTypeId,PackageId")] MyMenu MyMenu)
         {
-            if (id != mealType.Id)
+            if (id != MyMenu.Id)
             {
                 return NotFound();
             }
@@ -98,12 +110,12 @@ namespace kompozytor_menu.Controllers
             {
                 try
                 {
-                    _context.Update(mealType);
+                    _context.Update(MyMenu);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MealTypeExists(mealType.Id))
+                    if (!MyMenuExists(MyMenu.Id))
                     {
                         return NotFound();
                     }
@@ -114,7 +126,11 @@ namespace kompozytor_menu.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(mealType);
+
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
+            return View(MyMenu);
         }
 
         // GET: UnitOfMeasures/Delete/5
@@ -125,14 +141,14 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType
+            var MyMenu = await _context.MyMenu
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            if (MyMenu == null)
             {
                 return NotFound();
             }
 
-            return View(mealType);
+            return View(MyMenu);
         }
 
         // POST: UnitOfMeasures/Delete/5
@@ -140,15 +156,15 @@ namespace kompozytor_menu.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mealType = await _context.MealType.SingleOrDefaultAsync(m => m.Id == id);
-            _context.MealType.Remove(mealType);
+            var MyMenu = await _context.MyMenu.SingleOrDefaultAsync(m => m.Id == id);
+            _context.MyMenu.Remove(MyMenu);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MealTypeExists(int id)
+        private bool MyMenuExists(int id)
         {
-            return _context.MealType.Any(e => e.Id == id);
+            return _context.MyMenu.Any(e => e.Id == id);
         }
     }
 }

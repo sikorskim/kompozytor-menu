@@ -7,6 +7,10 @@
             "label": "build",
             "command": "dotnet",
             "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
             "args": [
                 "build",
                 "${workspaceFolder}/kompozytor-menu.csproj"

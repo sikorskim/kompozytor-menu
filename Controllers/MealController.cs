@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace kompozytor_menu.Controllers
 {
-    public class MealTypeController : Controller
+    public class MealController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MealTypeController(ApplicationDbContext context)
+        public MealController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,8 @@ namespace kompozytor_menu.Controllers
         // GET: UnitOfMeasures
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MealType.ToListAsync());            
+            var meals = _context.Meal.Include(i=>i.Package).Include(i=>i.MealType);
+            return View(await meals.ToListAsync());            
         }
 
         // GET: UnitOfMeasures/Details/5
@@ -34,19 +35,22 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType
+            var Meal = await _context.Meal
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            if (Meal == null)
             {
                 return NotFound();
             }
 
-            return View(mealType);
+            return View(Meal);
         }
 
         // GET: UnitOfMeasures/Create
         public IActionResult Create()
         {
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
             return View();
         }
 
@@ -55,15 +59,19 @@ namespace kompozytor_menu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] MealType mealType)
+        public async Task<IActionResult> Create([Bind("Id,Name,MealTypeId,PackageId")] Meal Meal)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mealType);
+                _context.Add(Meal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(mealType);
+
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
+            return View(Meal);
         }
 
         // GET: UnitOfMeasures/Edit/5
@@ -74,12 +82,16 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType.SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            var Meal = await _context.Meal.SingleOrDefaultAsync(m => m.Id == id);
+            if (Meal == null)
             {
                 return NotFound();
             }
-            return View(mealType);
+
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
+            return View(Meal);
         }
 
         // POST: UnitOfMeasures/Edit/5
@@ -87,9 +99,9 @@ namespace kompozytor_menu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] MealType mealType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,MealTypeId,PackageId")] Meal Meal)
         {
-            if (id != mealType.Id)
+            if (id != Meal.Id)
             {
                 return NotFound();
             }
@@ -98,12 +110,12 @@ namespace kompozytor_menu.Controllers
             {
                 try
                 {
-                    _context.Update(mealType);
+                    _context.Update(Meal);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MealTypeExists(mealType.Id))
+                    if (!MealExists(Meal.Id))
                     {
                         return NotFound();
                     }
@@ -114,7 +126,11 @@ namespace kompozytor_menu.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(mealType);
+
+            ViewData["MealTypeId"] = new SelectList (_context.MealType, "Id", "Name");
+            ViewData["PackageId"] = new SelectList (_context.Package, "Id", "Name");
+
+            return View(Meal);
         }
 
         // GET: UnitOfMeasures/Delete/5
@@ -125,14 +141,14 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType
+            var Meal = await _context.Meal
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            if (Meal == null)
             {
                 return NotFound();
             }
 
-            return View(mealType);
+            return View(Meal);
         }
 
         // POST: UnitOfMeasures/Delete/5
@@ -140,15 +156,15 @@ namespace kompozytor_menu.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mealType = await _context.MealType.SingleOrDefaultAsync(m => m.Id == id);
-            _context.MealType.Remove(mealType);
+            var Meal = await _context.Meal.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Meal.Remove(Meal);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MealTypeExists(int id)
+        private bool MealExists(int id)
         {
-            return _context.MealType.Any(e => e.Id == id);
+            return _context.Meal.Any(e => e.Id == id);
         }
     }
 }

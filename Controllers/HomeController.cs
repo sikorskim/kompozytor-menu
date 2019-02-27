@@ -5,11 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using kompozytor_menu.Models;
+using kompozytor_menu.Data;
+using kompozytor_menu.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace kompozytor_menu.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -26,19 +36,32 @@ namespace kompozytor_menu.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Menu()
+        public async Task<IActionResult> Menu()
         {
-            ViewData["Soups0"] = null;
-            ViewData["Soups1"] = null;
-            ViewData["Soups2"] = null;
+            ViewData["Soups0Price"] = _context.Package.Single(p=>p.Id==1).Price.ToString("0.00");
+            ViewData["Soups1Price"] = _context.Package.Single(p=>p.Id==2).Price.ToString("0.00");
+            ViewData["Soups2Price"] = _context.Package.Single(p=>p.Id==3).Price.ToString("0.00");
 
-            ViewData["Meats0"] = null;
-            ViewData["Meats1"] = null;
-            ViewData["Meats2"] = null;
+            var allMeals = _context.Meal;
 
-            ViewData["AddOns"] = null;
+            return View(await allMeals.ToListAsync());
+        }
 
-            return View();
+        public IActionResult Menu2()
+        {
+            ViewData["Soups0Price"] = _context.Package.Single(p=>p.Id==1).Price.ToString("0.00");
+            ViewData["Soups1Price"] = _context.Package.Single(p=>p.Id==2).Price.ToString("0.00");
+            ViewData["Soups2Price"] = _context.Package.Single(p=>p.Id==3).Price.ToString("0.00");
+
+            List<Meal> allMeals = _context.Meal.ToList();
+            List<MenuItemViewModel> menuItems = new List<MenuItemViewModel>();
+
+            foreach(Meal m in allMeals)
+            {
+                MenuItemViewModel mi = new MenuItemViewModel(m.Id, m.Name, m.Package.Price, m.PackageId);
+                menuItems.Add(mi);
+            }
+            return View(menuItems);
         }
     }
 }

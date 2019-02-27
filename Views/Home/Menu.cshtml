@@ -1,0 +1,57 @@
+@model IEnumerable<kompozytor_menu.Models.Meal>
+
+<h2>Zupy</h2>
+<h5>Wybierz jeden rodzaj</h5>
+<br>
+
+<div class="card-deck">
+  <div class="card">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Pakiet Srebrny</h5>
+
+        <ul class="list-group list-group-flush">
+            @foreach (var item in Model.Where(p=>p.PackageId==1)) 
+            {
+                <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)</li>
+            }
+        </ul>
+    </div>
+    <div class="card-footer">
+      Cena @ViewData["Soups0Price"]zł
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Pakiet Złoty</h5>
+      
+        <ul class="list-group list-group-flush">
+            @foreach (var item in Model.Where(p=>p.PackageId==2)) 
+            {
+                <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)</li>
+            }
+        </ul>
+    </div>
+    <div class="card-footer">
+      Cena @ViewData["Soups1Price"]zł
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Pakiet Platynowy</h5>
+        <ul class="list-group list-group-flush">
+            @foreach (var item in Model.Where(p=>p.PackageId==3)) 
+            {
+                <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)</li>
+            }
+        </ul>
+    </div>
+    <div class="card-footer">
+      Cena @ViewData["Soups2Price"]zł
+    </div>
+  </div>
+</div>

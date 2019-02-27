@@ -11,19 +11,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace kompozytor_menu.Controllers
 {
-    public class MealTypeController : Controller
+    public class PackageController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MealTypeController(ApplicationDbContext context)
+        public PackageController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: UnitOfMeasures
         public async Task<IActionResult> Index()
-        {
-            return View(await _context.MealType.ToListAsync());            
+        {            
+            return View(await _context.Package.ToListAsync());            
         }
 
         // GET: UnitOfMeasures/Details/5
@@ -34,14 +34,14 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType
+            var Package = await _context.Package
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            if (Package == null)
             {
                 return NotFound();
             }
 
-            return View(mealType);
+            return View(Package);
         }
 
         // GET: UnitOfMeasures/Create
@@ -55,15 +55,15 @@ namespace kompozytor_menu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] MealType mealType)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Package Package)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mealType);
+                _context.Add(Package);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(mealType);
+            return View(Package);
         }
 
         // GET: UnitOfMeasures/Edit/5
@@ -74,12 +74,12 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType.SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            var Package = await _context.Package.SingleOrDefaultAsync(m => m.Id == id);
+            if (Package == null)
             {
                 return NotFound();
             }
-            return View(mealType);
+            return View(Package);
         }
 
         // POST: UnitOfMeasures/Edit/5
@@ -87,9 +87,9 @@ namespace kompozytor_menu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] MealType mealType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price")] Package Package)
         {
-            if (id != mealType.Id)
+            if (id != Package.Id)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace kompozytor_menu.Controllers
             {
                 try
                 {
-                    _context.Update(mealType);
+                    _context.Update(Package);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MealTypeExists(mealType.Id))
+                    if (!PackageExists(Package.Id))
                     {
                         return NotFound();
                     }
@@ -114,7 +114,7 @@ namespace kompozytor_menu.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(mealType);
+            return View(Package);
         }
 
         // GET: UnitOfMeasures/Delete/5
@@ -125,14 +125,14 @@ namespace kompozytor_menu.Controllers
                 return NotFound();
             }
 
-            var mealType = await _context.MealType
+            var Package = await _context.Package
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (mealType == null)
+            if (Package == null)
             {
                 return NotFound();
             }
 
-            return View(mealType);
+            return View(Package);
         }
 
         // POST: UnitOfMeasures/Delete/5
@@ -140,15 +140,15 @@ namespace kompozytor_menu.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mealType = await _context.MealType.SingleOrDefaultAsync(m => m.Id == id);
-            _context.MealType.Remove(mealType);
+            var Package = await _context.Package.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Package.Remove(Package);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MealTypeExists(int id)
+        private bool PackageExists(int id)
         {
-            return _context.MealType.Any(e => e.Id == id);
+            return _context.Package.Any(e => e.Id == id);
         }
     }
 }
