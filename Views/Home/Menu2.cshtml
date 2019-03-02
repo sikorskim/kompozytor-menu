@@ -1,57 +1,102 @@
-@model IEnumerable<kompozytor_menu.ViewModels.MenuItemViewModel>
+@model kompozytor_menu.ViewModels.MyMenuViewModel
 
-<h2>Zupy</h2>
-<h5>Wybierz jeden rodzaj</h5>
+<h2><p class="text-center">Zupa</p></h2>
+<h5><p class="text-center">Wybierz jeden rodzaj</p></h5>
 <br>
 
 <div class="card-deck">
-  <div class="card">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">Pakiet Srebrny</h5>
 
+    <div class="card">
+      <div class="card-body">        
         <ul class="list-group list-group-flush">
-            @foreach (var item in Model.Where(p=>p.PackageId==1)) 
-            {
-                <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)</li>
-            }
+                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==1)) 
+                {
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name) <input type="checkbox" asp-for="@item.Selected"  /> </li>
+                }
         </ul>
-    </div>
+      </div>
     <div class="card-footer">
-      Cena @ViewData["Soups0Price"]zł
+      Cena @Model.MyMenuItems.Where(p=>p.PackageId==1).FirstOrDefault().Price zł
     </div>
   </div>
 
-  <div class="card">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Pakiet Złoty</h5>
-      
+    <div class="card">
+      <div class="card-body">        
         <ul class="list-group list-group-flush">
-            @foreach (var item in Model.Where(p=>p.PackageId==2)) 
-            {
-                <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)</li>
-            }
+                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==2)) 
+                {
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
+                }
         </ul>
-    </div>
+      </div>
     <div class="card-footer">
-      Cena @ViewData["Soups1Price"]zł
+      Cena  zł
     </div>
   </div>
 
-  <div class="card">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Pakiet Platynowy</h5>
+
+    <div class="card">
+      <div class="card-body">        
         <ul class="list-group list-group-flush">
-            @foreach (var item in Model.Where(p=>p.PackageId==3)) 
-            {
-                <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)</li>
-            }
+                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==3)) 
+                {
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
+                }
         </ul>
-    </div>
+      </div>
     <div class="card-footer">
-      Cena @ViewData["Soups2Price"]zł
+      Cena  zł
     </div>
   </div>
 </div>
+
+</br>
+<h2><p class="text-center">Pakiet mięs</p></h2>
+<h5><p class="text-center">Wybierz do 4 gatunków w ramach pakietu</p></h5>
+<h5><p class="text-center">2 porcje na osobę</p></h5>
+<br>
+
+  <div class="card-deck">
+
+    <div class="card">
+      <div class="card-body">        
+        <ul class="list-group list-group-flush">
+                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==4)) 
+                {
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name) <input type="checkbox" asp-for="@item.Selected"  /> </li>
+                }
+        </ul>
+      </div>
+    <div class="card-footer">
+      Cena  zł
+    </div>
+  </div>
+
+    <div class="card">
+      <div class="card-body">        
+        <ul class="list-group list-group-flush">
+                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==5)) 
+                {
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
+                }
+        </ul>
+      </div>
+    <div class="card-footer">
+      Cena  zł
+    </div>
+  </div>
+
+
+    <div class="card">
+      <div class="card-body">        
+        <ul class="list-group list-group-flush">
+                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==6)) 
+                {
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
+                }
+        </ul>
+      </div>
+    <div class="card-footer">
+      Cena  zł
+    </div>
+  </div>

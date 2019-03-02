@@ -53,15 +53,18 @@ namespace kompozytor_menu.Controllers
             ViewData["Soups1Price"] = _context.Package.Single(p=>p.Id==2).Price.ToString("0.00");
             ViewData["Soups2Price"] = _context.Package.Single(p=>p.Id==3).Price.ToString("0.00");
 
-            List<Meal> allMeals = _context.Meal.ToList();
-            List<MenuItemViewModel> menuItems = new List<MenuItemViewModel>();
+            var allMeals = _context.Meal;
+            List<MyMenuItemViewModel> allMenuItems = new List<MyMenuItemViewModel>();
 
             foreach(Meal m in allMeals)
             {
-                MenuItemViewModel mi = new MenuItemViewModel(m.Id, m.Name, m.Package.Price, m.PackageId);
-                menuItems.Add(mi);
-            }
-            return View(menuItems);
+                MyMenuItemViewModel item = new MyMenuItemViewModel(m.Id, m.Name, m.PackageId, m.MealTypeId);
+                allMenuItems.Add(item);
+            }    
+
+            MyMenuViewModel myMenuViewModel = new MyMenuViewModel(allMenuItems);
+
+            return View(myMenuViewModel);
         }
     }
 }
