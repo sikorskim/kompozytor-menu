@@ -62,9 +62,39 @@ namespace kompozytor_menu.Controllers
                 allMenuItems.Add(item);
             }    
 
-            MyMenuViewModel myMenuViewModel = new MyMenuViewModel(allMenuItems);
 
-            return View(myMenuViewModel);
+            return View(allMenuItems);
+        }
+
+        // POST: UnitOfMeasures/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Menu2(List<MyMenuItemViewModel> myMenuItemsVM)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Meal> meals = new List<Meal>();
+                foreach (MyMenuItemViewModel item in myMenuItemsVM)
+                {
+                    if (item.Selected)
+                    {
+                        Meal meal = _context.Meal.Single(p => p.Id == item.Id);
+                        meals.Add(meal);
+                    }
+                }
+
+                MyMenu myMenu = new MyMenu();
+                myMenu.GenerationTime = DateTime.Now;
+                myMenu.Meals = meals;
+
+                _context.Add(myMenu);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(myMenuItemsVM);
         }
     }
 }

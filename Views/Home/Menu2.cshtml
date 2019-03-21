@@ -1,29 +1,42 @@
-@model kompozytor_menu.ViewModels.MyMenuViewModel
+@model List<kompozytor_menu.ViewModels.MyMenuItemViewModel>
+
+<form asp-action="Menu2">
 
 <h2><p class="text-center">Zupa</p></h2>
 <h5><p class="text-center">Wybierz jeden rodzaj</p></h5>
 <br>
+
 
 <div class="card-deck">
 
     <div class="card">
       <div class="card-body">        
         <ul class="list-group list-group-flush">
-                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==1)) 
+
+                <!-- @foreach (var item in Model.Where(p=>p.PackageId==1)) 
                 {
                     <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name) <input type="checkbox" asp-for="@item.Selected"  /> </li>
-                }
+                } -->
+
+
+    @for (int i = 0; i < Model.Where(p=>p.PackageId==1).Count(); i++)
+   {
+        <div>
+          <li class="list-group-item">@Html.DisplayFor(modelItem => Model[i].Name) <input type="checkbox" asp-for="@Model[i].Selected"  /> </li>
+          @Html.HiddenFor(modelItem =>Model[i].Id)  
+        </div>
+   }
         </ul>
       </div>
     <div class="card-footer">
-      Cena @Model.MyMenuItems.Where(p=>p.PackageId==1).FirstOrDefault().Price zł
+
     </div>
   </div>
 
     <div class="card">
       <div class="card-body">        
         <ul class="list-group list-group-flush">
-                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==2)) 
+                @foreach (var item in Model.Where(p=>p.PackageId==2)) 
                 {
                     <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
                 }
@@ -38,7 +51,7 @@
     <div class="card">
       <div class="card-body">        
         <ul class="list-group list-group-flush">
-                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==3)) 
+                @foreach (var item in Model.Where(p=>p.PackageId==3)) 
                 {
                     <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
                 }
@@ -61,7 +74,7 @@
     <div class="card">
       <div class="card-body">        
         <ul class="list-group list-group-flush">
-                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==4)) 
+                @foreach (var item in Model.Where(p=>p.PackageId==4)) 
                 {
                     <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name) <input type="checkbox" asp-for="@item.Selected"  /> </li>
                 }
@@ -75,7 +88,7 @@
     <div class="card">
       <div class="card-body">        
         <ul class="list-group list-group-flush">
-                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==5)) 
+                @foreach (var item in Model.Where(p=>p.PackageId==5)) 
                 {
                     <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
                 }
@@ -90,7 +103,7 @@
     <div class="card">
       <div class="card-body">        
         <ul class="list-group list-group-flush">
-                @foreach (var item in Model.MyMenuItems.Where(p=>p.PackageId==6)) 
+                @foreach (var item in Model.Where(p=>p.PackageId==6)) 
                 {
                     <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name)  <input type="checkbox" asp-for="@item.Selected"  /> </li>
                 }
@@ -100,3 +113,8 @@
       Cena  zł
     </div>
   </div>
+
+
+<input type="submit" value="Create" class="btn btn-default" />
+
+  </form>

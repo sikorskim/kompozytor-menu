@@ -14,6 +14,8 @@ namespace kompozytor_menu.ViewModels
         public int MealTypeId { get; set; }
         public bool Selected { get; set; }
 
+        public MyMenuItemViewModel()
+        { }
         public MyMenuItemViewModel(int id, string name, int packageId, int mealTypeId)
         {
             Id=id;

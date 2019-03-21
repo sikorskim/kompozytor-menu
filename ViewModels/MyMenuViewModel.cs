@@ -14,5 +14,8 @@ namespace kompozytor_menu.ViewModels
         {
             MyMenuItems = myMenuItems;
         }
+
+        public MyMenuViewModel()
+        { }
     }
 }
