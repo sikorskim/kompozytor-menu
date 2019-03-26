@@ -62,7 +62,6 @@ namespace kompozytor_menu.Controllers
                 allMenuItems.Add(item);
             }    
 
-
             return View(allMenuItems);
         }
 

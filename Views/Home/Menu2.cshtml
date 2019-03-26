@@ -13,19 +13,21 @@
       <div class="card-body">        
         <ul class="list-group list-group-flush">
 
-                <!-- @foreach (var item in Model.Where(p=>p.PackageId==1)) 
-                {
-                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.Name) <input type="checkbox" asp-for="@item.Selected"  /> </li>
-                } -->
-
+<div id="RadioButtonGroup">
 
     @for (int i = 0; i < Model.Where(p=>p.PackageId==1).Count(); i++)
    {
-        <div>
-          <li class="list-group-item">@Html.DisplayFor(modelItem => Model[i].Name) <input type="checkbox" asp-for="@Model[i].Selected"  /> </li>
-          @Html.HiddenFor(modelItem =>Model[i].Id)  
-        </div>
+            <li class="list-group-item">
+            @Html.HiddenFor(modelItem =>Model[i].Id)
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="" asp-for="@Model[i].Selected">
+              <label class="form-check-label" asp-for="@Model[i].Selected">
+               @Html.DisplayFor(modelItem => Model[i].Name)
+              </label>
+            </div>
+            </li>
    }
+   </div>
         </ul>
       </div>
     <div class="card-footer">
